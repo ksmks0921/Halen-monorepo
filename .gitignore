@@ -1,0 +1,44 @@
+# Folders
+**/node_modules
+**/build
+**/.build
+**/dist
+**/logs
+**/coverage
+**/.serverless
+
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+
+
+# Files
+**/.env
+**/.env.json
+**/*.log
+**/.DS_Store
+**/.nyc_output
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# IDEs and editors
+/.idea
+.history
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+*.code-workspace
+**/.serverless
+**/*.tgz

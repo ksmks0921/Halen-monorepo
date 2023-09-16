@@ -1,0 +1,56 @@
+# gateway-svc-install:
+#   variables:
+#     DIR: packages/services/gateway-svc
+#   extends: .install-template
+#   needs: ["pack"]    # enable this if want to start in parallel to other stages
+  
+# gateway-svc-compile:
+#   variables:
+#     DIR: packages/services/gateway-svc
+#   extends: .compile-template
+#   needs: ["pack"]
+#   # needs: ["gateway-svc-install"]   
+
+# gateway-svc-test:
+#   variables:
+#     DIR: packages/services/gateway-svc
+#   extends: .test-template
+#   needs: ["gateway-svc-compile"]    
+
+# gateway-svc-build:
+#   variables:
+#     DIR: packages/services/gateway-svc
+#   extends: .build-template 
+#   needs: ["compile"]   
+
+gateway-svc-deploy-plg:
+  variables:
+    DIR: packages/services/gateway-svc
+    ENV: plg
+    AWS_PROFILE: plg  
+  extends: .deploy-template
+  needs: ["test"]  
+
+gateway-svc-deploy-dev:
+  variables:
+    DIR: packages/services/gateway-svc
+    ENV: dev
+    AWS_PROFILE: dev  
+  extends: .deploy-template
+  needs: ["test"]  
+
+gateway-svc-deploy-stg:
+  variables:
+    DIR: packages/services/gateway-svc
+    ENV: stg
+    AWS_PROFILE: stg     
+  extends: .deploy-template
+  needs: ["gateway-svc-deploy-dev"]  
+
+gateway-svc-deploy-prod:
+  variables:
+    DIR: packages/services/gateway-svc
+    ENV: prod
+    AWS_PROFILE: prod      
+  extends: .deploy-prod-template
+  needs: ["gateway-svc-deploy-stg"]

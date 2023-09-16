@@ -1,0 +1,47 @@
+image: node:18-slim
+
+setup:
+  stage: setup
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" && $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+  script: 
+    - 'echo "Job start: $CI_JOB_STARTED_AT"'
+    - 'echo "Branch: $CI_COMMIT_REF_SLUG"'
+    - 'echo "Commit Author: $CI_COMMIT_AUTHOR"'
+
+
+# Install Job
+install:
+  stage: install
+  extends: .install-rules-template
+  before_script:
+    - cd $DIR
+    - yarn --version
+    - yarn set version berry
+  script: 
+    - yarn install
+
+
+
+  
+# Compile Job
+compile:
+  stage: compile
+  extends: .mr-rules-template 
+  needs: ["install"]
+  before_script:
+    - cd $DIR
+  script:
+    - yarn lint
+    - yarn build
+
+
+# Test Job
+test:
+  stage: test
+  extends: .mr-rules-template 
+  needs: ["compile"]
+  before_script:
+    - cd $DIR
+  script:
+    - yarn test

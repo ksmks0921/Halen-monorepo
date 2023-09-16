@@ -1,0 +1,39 @@
+service: admin-svc
+
+frameworkVersion: '3'
+
+plugins:
+  - serverless-offline
+  - serverless-jetpack
+  - serverless-plugin-optimize
+  - serverless-plugin-typescript 
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  stage: ${opt:stage, 'dev'}
+  profile: ${opt:aws-profile, 'dev'}
+  region: ${opt:region, 'us-east-1'}
+
+
+package:
+  individually: true
+  include:
+    - node_modules/
+
+functions:
+  api:
+    handler: src/main.handler
+    timeout: 20
+    events:
+      - http:
+          method: any
+          path: /{proxy+}
+
+custom:
+  serverless-offline:
+    httpPort: 3003
+    lambdaPort: 3013
+    websocketPort: 3023    
+  optimize:
+    external: ['swagger-ui-dist']    

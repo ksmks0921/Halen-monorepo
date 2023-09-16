@@ -1,0 +1,36 @@
+{
+  "name": "@halen/shared",
+  "version": "1.0.0",
+  "description": "shared package for types and interfaces",
+  "private": true,
+  "license": "UNLICENSED",
+  "main": "dist/index",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "directory": "dist"
+  },
+  "scripts": {
+    "clean": "rimraf node_modules",
+    "prebuild": "rimraf dist",
+    "build": "tsc -p tsconfig.build.json",
+    "prepare": "yarn build",
+    "postinstall": "yarn build",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "lint:fix": "eslint \"{src,test}/**/*.ts\" --fix",
+    "test": "echo \"INFO: no test\""
+  },
+  "dependencies": {
+    "typescript": "^4.9.5"
+  },
+  "devDependencies": {
+    "@types/node": "^18.13.0",
+    "@typescript-eslint/eslint-plugin": "^5.51.0",
+    "@typescript-eslint/parser": "^5.51.0",
+    "eslint": "^8.33.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.8.4"
+  }
+}

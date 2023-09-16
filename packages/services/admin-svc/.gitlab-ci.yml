@@ -1,0 +1,40 @@
+# admin-svc-install:
+#   variables:
+#     DIR: packages/services/admin-svc
+#   extends: .install-template
+#   needs: ["pack"]    # enable this if want to start in parallel to other stages
+
+# admin-svc-compile:
+#   variables:
+#     DIR: packages/services/admin-svc
+#   extends: .compile-template
+#   needs: ["pack"]
+#   # needs: ["admin-svc-install"]   
+
+# admin-svc-test:
+#   variables:
+#     DIR: packages/services/admin-svc
+#   extends: .test-template
+#   needs: ["admin-svc-compile"]    
+
+# admin-svc-build:
+#   variables:
+#     DIR: packages/services/admin-svc
+#   extends: .build-template 
+#   needs: ["compile"]      
+
+admin-svc-deploy-plg:
+  variables:
+    DIR: packages/services/admin-svc
+    ENV: plg
+    AWS_PROFILE: plg
+  extends: .deploy-template
+  needs: ["test"]
+
+admin-svc-deploy-dev:
+  variables:
+    DIR: packages/services/admin-svc
+    ENV: dev
+    AWS_PROFILE: dev   
+  extends: .deploy-template
+  needs: ["test"]  

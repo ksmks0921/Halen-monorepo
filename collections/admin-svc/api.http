@@ -1,0 +1,11 @@
+@host={{adminHost}}
+
+
+
+### GET Health
+GET {{host}}/app/health
+
+
+
+### GET Swagger Docs
+GET {{host}}

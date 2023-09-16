@@ -1,0 +1,140 @@
+image: node:18-slim
+
+stages:
+  - setup
+  - install  
+  - compile
+  - sast
+  - test
+  - deploy
+  - dast  
+  - prod
+  - fuzz
+
+variables:
+  DIR: "./"
+  SECURE_LOG_LEVEL: error
+  RETIREJS_JS_ADVISORY_DB: "example.com/jsrepository.json"
+  RETIREJS_NODE_ADVISORY_DB: "example.com/npmrepository.json"
+  FUZZAPI_TARGET_URL: https://ajg3fy3jd7.execute-api.us-east-1.amazonaws.com/plg
+  FUZZAPI_OPENAPI: https://ajg3fy3jd7.execute-api.us-east-1.amazonaws.com/plg/api-json
+  FUZZAPI_PROFILE: Quick-10  
+
+cache:
+  key: $CI_PIPELINE_ID
+  paths:
+    - .yarn/
+    - node_modules/
+    - "**/node_modules/"
+    - "./packages/shared/"
+
+# Note: dont use a global before_script, it will run before every stage
+
+setup:
+  stage: setup
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" && $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+  script: 
+    - 'echo "Job start: $CI_JOB_STARTED_AT"'
+    - 'echo "Branch: $CI_COMMIT_REF_SLUG"'
+    - 'echo "Commit Author: $CI_COMMIT_AUTHOR"'
+
+
+# Install Job
+install:
+  stage: install
+  extends: .install-rules-template
+  before_script:
+    - cd $DIR
+    - yarn --version
+    - yarn set version berry
+  script: 
+    - yarn install
+
+
+# Compile Job
+compile:
+  stage: compile
+  extends: .mr-rules-template
+  needs: ["install"]
+  before_script:
+    - cd $DIR
+  script:
+    - yarn lint
+    - yarn build
+
+
+# Test Job
+test:
+  stage: test
+  extends: .mr-rules-template
+  needs: ["compile"]
+  before_script:
+    - cd $DIR 
+  script:
+    - yarn test
+
+# SAST
+sast:
+  stage: test
+
+
+# Deploy Job Template For Non-Prod Environments (using AWS)
+.deploy-template:
+  image: "$CI_REGISTRY_IMAGE${tag}"
+  stage: deploy
+  extends: .deploy-rules-template
+  environment: $ENV
+  before_script:
+    - cd $DIR
+    - echo "AWS_PROFILE = $AWS_PROFILE"
+    - npm i -g serverless
+  script: 
+    - serverless deploy --stage $ENV --aws-profile $AWS_PROFILE
+
+# DAST
+# .dast-template:
+#   stage: dast
+  # extends: .deploy-rules-template
+  # dast_configuration:
+  #   site_profile: $SITE_PROFILE
+  #   scanner_profile: "halen-monorepo-dast-scanner-profile"  
+
+
+# Deploy Job Template For Prod Environment (using AWS)
+.deploy-prod-template:
+  image: "$CI_REGISTRY_IMAGE${tag}"
+  stage: prod
+  extends: .deploy-prod-rules-template
+  environment: $ENV
+  before_script:
+    - cd $DIR  
+    - npm i -g serverless
+  script: 
+    - serverless deploy --stage $ENV --aws-profile $AWS_PROFILE
+
+
+# whenever we add a new service in the packages folder, 
+# we will add a .gitlab-ci.yml file to it, (see packages/shared/.gitlab-ci.yml for example)
+# those files will extend the above templates as needed, so we can keep our CI / CD DRY
+# different jobs will run only for those services which has any changes
+# all the jobs and stages will run if there is change in the main .gitlab-ci.yml or package.json files
+# finally, we import all those file here
+
+# SAST customization: https://docs.gitlab.com/ee/user/application_security/sast/#customizing-the-sast-settings
+# Secret Detection customization: https://docs.gitlab.com/ee/user/application_security/secret_detection/#customizing-settings
+# Dependency Scanning customization: https://docs.gitlab.com/ee/user/application_security/dependency_scanning/#customizing-the-dependency-scanning-settings
+# Container Scanning customization: https://docs.gitlab.com/ee/user/application_security/container_scanning/#customizing-the-container-scanning-settings
+
+include:
+  - template: Security/Dependency-Scanning.gitlab-ci.yml
+  - template: Security/Secret-Detection.gitlab-ci.yml  
+  - template: Security/API-Fuzzing.gitlab-ci.yml
+  - template: Security/SAST.gitlab-ci.yml
+  - template: DAST.gitlab-ci.yml  
+  - template: Code-Quality.gitlab-ci.yml    
+
+  - local: ".gitlab-ci.rules.yml"
+  - local: "packages/services/example-svc/.gitlab-ci.yml"  
+  - local: "packages/services/gateway-svc/.gitlab-ci.yml"  
+  - local: "packages/services/mealme-svc/.gitlab-ci.yml"

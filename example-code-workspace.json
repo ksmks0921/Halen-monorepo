@@ -1,0 +1,36 @@
+{
+	"folders": [
+    {
+      "path": "."
+    }
+  ],
+	"settings": {
+		"rest-client.environmentVariables": {
+            "$shared": {
+              "exampleHost": "http://localhost:5000/local/api",
+              "gatewayHost": "http://localhost:3000/local/api",
+              "mealmeHost": "http://localhost:3001/local/api",
+              "groceryHost": "http://localhost:3002/local/api",
+              "adminHost": "http://localhost:3003/local/api"
+            },
+            "playground": {              
+              "exampleHost": "https://ajg3fy3jd7.execute-api.us-east-1.amazonaws.com/plg/api",
+              "gatewayHost": "https://5sz83esb50.execute-api.us-east-1.amazonaws.com/plg/api",
+              "mealmeHost": "https://pw9oag3nz9.execute-api.us-east-1.amazonaws.com/plg/api"
+            },
+            "dev": {
+              "exampleHost": "https://gd0ad85qv8.execute-api.us-east-1.amazonaws.com/dev/api",
+              "gatewayHost": "https://cr3zp69qj1.execute-api.us-east-1.amazonaws.com/dev/api",
+              "mealmeHost": "https://j9cigyowa9.execute-api.us-east-1.amazonaws.com/dev/api"
+            },
+            "staging": {     
+              "gatewayHost": "https://0vgr5efbw5.execute-api.us-east-1.amazonaws.com/stg/api",
+              "mealmeHost": "https://vp0bdwfgv4.execute-api.us-east-1.amazonaws.com/stg/api"	
+            },
+            "prod": {
+              "gatewayHost": "https://9yycrfstzj.execute-api.us-east-1.amazonaws.com/prod/api",
+              "mealmeHost": "https://n4wkhvh8re.execute-api.us-east-1.amazonaws.com/prod/api"	
+            }
+          }
+	}
+}

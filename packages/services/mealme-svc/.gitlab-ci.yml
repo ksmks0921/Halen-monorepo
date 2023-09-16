@@ -1,0 +1,56 @@
+# mealme-svc-install:
+#   variables:
+#     DIR: packages/services/mealme-svc
+#   extends: .install-template
+#   needs: ["pack"]    # enable this if want to start in parallel to other stages
+
+# mealme-svc-compile:
+#   variables:
+#     DIR: packages/services/mealme-svc
+#   extends: .compile-template
+#   needs: ["pack"]
+#   # needs: ["mealme-svc-install"]  
+
+# mealme-svc-test:
+#   variables:
+#     DIR: packages/services/mealme-svc
+#   extends: .test-template
+#   needs: ["mealme-svc-compile"]  
+
+# mealme-svc-build:
+#   variables:
+#     DIR: packages/services/mealme-svc
+#   extends: .build-template  
+#   needs: ["compile"]  
+
+mealme-svc-deploy-plg:
+  variables:
+    DIR: packages/services/mealme-svc
+    ENV: plg
+    AWS_PROFILE: plg     
+  extends: .deploy-template
+  needs: ["test"]  
+
+mealme-svc-deploy-dev:
+  variables:
+    DIR: packages/services/mealme-svc
+    ENV: dev
+    AWS_PROFILE: dev
+  extends: .deploy-template
+  needs: ["test"]  
+
+mealme-svc-deploy-stg:
+  variables:
+    DIR: packages/services/mealme-svc
+    ENV: stg
+    AWS_PROFILE: stg
+  extends: .deploy-template
+  needs: ["mealme-svc-deploy-dev"]
+
+mealme-svc-deploy-prod:
+  variables:
+    DIR: packages/services/mealme-svc
+    ENV: prod
+    AWS_PROFILE: prod
+  extends: .deploy-prod-template
+  needs: ["mealme-svc-deploy-stg"]

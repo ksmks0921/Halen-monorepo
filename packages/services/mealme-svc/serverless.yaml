@@ -1,0 +1,102 @@
+service: mealme-svc
+
+frameworkVersion: '3'
+
+plugins:
+  - serverless-offline
+  - serverless-jetpack
+  - serverless-add-api-key
+  - serverless-plugin-optimize
+  - serverless-plugin-typescript   
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  stage: ${opt:stage, 'dev'}
+  profile: ${opt:aws-profile, 'dev'}  
+  region: ${opt:region, 'us-east-1'}
+
+  iam:
+    role:
+      statements:
+        - Effect: 'Allow'
+          Action:
+            - 'dynamodb:DescribeTable'
+            - 'dynamodb:Query'
+            - 'dynamodb:Scan'
+            - 'dynamodb:GetItem'
+            - 'dynamodb:PutItem'
+            - 'dynamodb:UpdateItem'
+            - 'dynamodb:DeleteItem'
+          Resource: arn:aws:dynamodb:us-east-1:*:table/apiAuditTable-${opt:stage, 'dev'}
+
+package:
+  individually: true
+  include:
+    - node_modules/
+
+functions:
+  api:
+    handler: src/main.handler
+    timeout: 20
+    events:
+      - http:
+          method: any
+          path: /{proxy+}
+
+custom:
+  apiKeys:
+    - name: mealme-svc-api-key
+  serverless-offline:
+    httpPort: 3001
+    lambdaPort: 3011
+    websocketPort: 3021 
+  optimize:
+    external: ['swagger-ui-dist']       
+
+resources: # CloudFormation template syntax from here on.
+  Resources:
+    apiAuditTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: apiAuditTable
+        BillingMode: PAY_PER_REQUEST
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: apiName
+            AttributeType: S
+          - AttributeName: requestMethod
+            AttributeType: S
+          - AttributeName: requestAt
+            AttributeType: S
+          - AttributeName: responseStatus
+            AttributeType: S
+        GlobalSecondaryIndexes:
+          - IndexName: apiNameRequestAtIndex
+            KeySchema:
+              - AttributeName: apiName
+                KeyType: HASH
+              - AttributeName: requestAt
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+          - IndexName: responseStatusRequestAtIndex
+            KeySchema:
+              - AttributeName: responseStatus
+                KeyType: HASH
+              - AttributeName: requestAt
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+          - IndexName: requestMethodRequestAtIndex
+            KeySchema:
+              - AttributeName: requestMethod
+                KeyType: HASH
+              - AttributeName: requestAt
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL

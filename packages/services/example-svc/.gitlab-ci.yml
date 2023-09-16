@@ -1,0 +1,46 @@
+# example-svc-install:
+#   variables:
+#     DIR: packages/services/example-svc
+#   extends: .install-template
+#   needs: ["pack"]    # enable this if want to start in parallel to other stages
+
+# example-svc-compile:
+#   variables:
+#     DIR: packages/services/example-svc
+#   extends: .compile-template
+#   needs: ["pack"]
+#   # needs: ["example-svc-install"]   
+
+# example-svc-test:
+#   variables:
+#     DIR: packages/services/example-svc
+#   extends: .test-template
+#   needs: ["example-svc-compile"]    
+
+# example-svc-build:
+#   variables:
+#     DIR: packages/services/example-svc
+#   extends: .build-template 
+#   needs: ["compile"]      
+
+example-svc-deploy-plg:
+  variables:
+    DIR: packages/services/example-svc
+    ENV: plg
+    AWS_PROFILE: plg
+  extends: .deploy-template
+  needs: ["test"]
+
+example-svc-deploy-dev:
+  variables:
+    DIR: packages/services/example-svc
+    ENV: dev
+    AWS_PROFILE: dev   
+  extends: .deploy-template
+  needs: ["test"]  
+
+# example-svc-dast:
+#   variables:
+#     SITE_PROFILE: "example-svc-site-profile"
+#   extends: .dast-template
+#   needs: ["example-svc-deploy-plg"]    

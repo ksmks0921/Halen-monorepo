@@ -1,0 +1,34 @@
+{
+  "name": "halen",
+  "version": "1.0.0",
+  "description": "Monorepo for Halen Microservices",
+  "main": "main.ts",
+  "license": "MIT",
+  "private": true,
+  "engineStrict": true,
+  "engines": {
+    "node": "^18",
+    "yarn": ">= 2.0.0"
+  },
+  "packageManager": "yarn@3.6.0",
+  "workspaces": [
+    "packages/**/*"
+  ],
+  "scripts": {
+    "clean": "rimraf --glob ./**/node_modules",
+    "build": "yarn workspaces foreach -pt -v -i run build",
+    "test": "yarn workspaces foreach -pt -v -i run test",
+    "format": "yarn workspaces foreach -pt -v -i run format",
+    "lint": "yarn workspaces foreach -pt -v -i run lint",
+    "lint:fix": "yarn workspaces foreach -pt -v -i run lint:fix",
+    "start": "yarn workspaces foreach -pt -v -i run start",
+    "dev": "yarn workspaces foreach -pt -v -i run dev",
+    "serverless": "yarn workspaces foreach -pt -v -i run serverless",
+    "serverless:offline": "yarn workspaces foreach -pt -v -i run serverless:offline",
+    "postinstall": "husky install"
+  },
+  "devDependencies": {
+    "husky": "^8.0.3",
+    "rimraf": "^4.1.2"
+  }
+}

@@ -1,0 +1,78 @@
+# extendible rules templates
+# Rules are evaluated from top to bottom until first match is found.
+# Rules in an array (i.e starting with `- ` at the same indentation level) are ORed
+# Nested Rules (i.e starting on next line of an `- if:` rule, and are indented) are ANDed 
+# https://labs.etsi.org/rep/help/ci/yaml/README.md
+
+
+# Merge Request Rule
+.install-rules-template:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'  
+      changes:
+        - .gitlab-ci.yml
+        - $DIR/package.json      
+        - package.json   
+      allow_failure: true 
+    - if: '$CI_COMMIT_REF_NAME == "main"'
+      changes:
+        - .gitlab-ci.yml      
+        - $DIR/package.json
+        - package.json  
+
+
+# This rule allows a job (in this case, jobs in the compile and test stages) 
+# to run in these cases only:
+# if its a Merged Request
+#   - AND, on a branch of the merge request, there are changes in:
+#     - .gitlab-ci.yml OR package.json files in the monorepo root
+#     - Or in the source code of a particular service (packages/**/* folders)
+# OR when the branch is main (for the deploy stage needs)
+.mr-rules-template:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'  
+      changes:
+        - $DIR/**/*
+        - .gitlab-ci.yml
+        - package.json
+      allow_failure: true 
+    - if: '$CI_COMMIT_REF_NAME == "main"'
+      changes:
+        - $DIR/**/*
+        - .gitlab-ci.yml
+        - package.json
+
+
+# Build and Deploy Rule
+# This rule allows a job (in this case, jobs in the build and deploy stages) to run only if
+# its the main branch (after a Merged Request is merged to the main branch)
+# AND there are changes in:                                                       (THIS WORKS if the exists is not there)
+# - .gitlab-ci.yml OR package.json files in the monorepo root
+# - Or in the source code of a particular service (packages/**/* folders)
+
+.build-rules-template:
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "main"'
+      changes:
+        - $DIR/**/*
+        - .gitlab-ci.yml
+        - package.json
+
+
+.deploy-rules-template:
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "main"'
+      changes:
+        - $DIR/**/*
+        - .gitlab-ci.yml
+        - package.json
+
+
+.deploy-prod-rules-template:
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "main"'
+      changes:
+        - $DIR/**/*
+        - .gitlab-ci.yml
+        - package.json
+      when: manual

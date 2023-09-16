@@ -1,0 +1,96 @@
+# extendible jobs templates   
+
+# Install Job Template
+.install-template:
+  stage: install
+  extends: .install-rules-template 
+  needs: ["pack"]
+  before_script:
+    - cd $DIR
+    - yarn --version
+    - yarn set version berry
+  script:
+    - yarn install
+
+
+# Compile Job Template
+.compile-template:
+  stage: compile
+  extends: .mr-rules-template 
+  needs: ["install"]
+  before_script:
+    - cd $DIR
+  script:
+    - yarn lint
+    - yarn build
+
+
+# Test Job Template
+.test-template:
+  stage: test
+  extends: .mr-rules-template 
+  needs: ["compile"]
+  before_script:
+    - cd $DIR 
+  script:
+    - yarn test
+
+
+# Build Job Template (using Docker)
+.build-template:
+  image: docker:latest
+  stage: build
+  extends: .build-rules-template 
+  services:
+    - docker:dind
+
+  # Define the needed variables in the Settings -> CI/CD -> Variables section of our GitLab project
+  before_script:
+    - cd $DIR
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+
+  # Default branch leaves tag empty (= latest tag)
+  # All other branches are tagged with the escaped branch name (commit ref slug)
+  script:
+    - |
+      if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
+        tag=""
+        echo "Running on default branch '$CI_DEFAULT_BRANCH': tag = 'latest'"
+      else
+        tag=":$CI_COMMIT_REF_SLUG"
+        echo "Running on branch '$CI_COMMIT_BRANCH': tag = $tag"
+      fi
+    - docker build --pull -t "$CI_REGISTRY_IMAGE${tag}" -f Dockerfile .
+    - docker push "$CI_REGISTRY_IMAGE${tag}"
+  
+
+# Deploy Job Template For Non-Prod Environments (using AWS)
+.deploy-template:
+  stage: deploy
+  extends: .deploy-rules-template
+  environment: $ENV
+  before_script:
+    - npm i -g serverless
+  script: 
+    - cd $DIR
+    - serverless deploy --stage $ENV
+
+
+# Deploy Job Template For Prod Environment (using AWS)
+.deploy-prod-template:
+  stage: prod
+  extends: .deploy-prod-rules-template
+  environment: prod
+  before_script:
+    - npm i -g serverless
+  script: 
+    - cd $DIR
+    - serverless deploy --stage $ENV
+
+# DAST
+.dast-template:
+  stage: dast
+  extends: .deploy-rules-template
+  dast_configuration:
+    site_profile: $SITE_PROFILE
+    scanner_profile: "halen-monorepo-dast-scanner-profile"      

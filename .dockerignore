@@ -1,0 +1,16 @@
+**/node_modules
+**/coverage
+**/test
+**/npm-debug.log
+**/Dockerfile*
+**/*.log
+**/.dockerignore
+**/pg-init-scripts
+**/build/**/*
+**/dist/**/*
+**/.git
+**/.DS_Store
+**/.vscode
+**/README.md
+**/.env
+**/.env.json

@@ -1,0 +1,58 @@
+service: example-svc
+
+frameworkVersion: '3'
+
+plugins:
+  - serverless-offline
+  - serverless-jetpack
+  - serverless-plugin-optimize
+  - serverless-plugin-typescript 
+  # - serverless-add-api-key  
+  # - serverless-jest-plugin
+  # - serverless-stack-output
+  # - serverless-domain-manager
+  # - serverless-prune-plugin  
+  # - serverless-bundle
+  # - serverless-webpack
+  # - serverless-plugin-monorepo  dont use
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  stage: ${opt:stage, 'dev'}
+  profile: ${opt:aws-profile, 'dev'}
+  region: ${opt:region, 'us-east-1'}
+
+
+package:
+  individually: true
+  include:
+    - node_modules/
+
+functions:
+  api:
+    handler: src/main.handler    
+    timeout: 20
+    events:
+      # - http:
+      #     method: any
+      #     path: /    
+      - http:
+          method: any
+          path: /{proxy+}
+
+custom:
+  serverless-offline:
+    httpPort: 5000
+    lambdaPort: 5010
+    websocketPort: 5020
+    # noPrependStageInUrl: true 
+  optimize:
+    external: ['swagger-ui-dist']       
+
+# https://github.com/serverless/serverless
+# https://github.com/rdlabo-team/serverless-nestjs
+# https://docs.nestjs.com/faq/serverless
+# https://javascript.plainenglish.io/serverless-nestjs-document-your-api-with-swagger-and-aws-api-gateway-64a53962e8a2
+# https://github.com/nestjs/swagger/issues/199
+# https://github.com/nestjs/docs.nestjs.com/issues/96

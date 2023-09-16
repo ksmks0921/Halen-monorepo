@@ -1,0 +1,277 @@
+@host={{mealmeHost}}
+
+
+### GET Health
+GET {{host}}/app/health
+
+
+
+### GET Swagger Docs
+GET {{host}}
+
+
+
+
+### Search Stores
+GET {{host}}/v1/search/store
+    ?latitude=39.984866163277246
+    &longitude=-104.95503074572862
+
+
+###
+@storeId=9ae6eae5-414e-465c-9418-fdb3e632b749
+
+
+### Get Products in Store
+GET {{host}}/v1/search/product
+    ?store_id={{storeId}}
+    &user_latitude=39.984866163277246
+    &user_longitude=-104.95503074572862
+
+
+### Get Inventory Details for Store
+GET {{host}}/v1/inventory/details
+    ?store_id={{storeId}}
+    &user_latitude=39.984866163277246
+    &user_longitude=-104.95503074572862
+
+
+### Create Payment
+POST {{host}}/api/v1/payment/create
+Content-Type: application/json
+
+{
+  "user_email": "steve@apple.com",
+  "user_id": "7B36A9CF",
+  "payment_method": {
+    "card_number": 4242424242424242,
+    "expiration_year": 2034,
+    "expiration_month": 12,
+    "cvc": 123
+  }
+}
+
+
+### Delete Payment Method
+POST {{host}}/api/v1/payment/delete
+Content-Type: application/json
+
+{
+  "user_email": "steve@apple.com",
+  "user_id": "7B36A9CF",
+  "payment_method_id": "pm_1MmnlXEFrDExIlIkMh98aldX"
+}
+
+
+### List Payment Methods
+GET {{host}}/api/v1/payment/list
+    ?user_email=steve%40apple.com&user_id=7B36A9CF
+
+
+### Inventory Details 
+GET {{host}}/api/v1/inventory/details
+    ?subcategory_id=gAAAAAAAAAAAvcAsFofXR7XlzNv5B6-g-oUKixAk362zkFMa_F2sD7xxr5qSwQyYbIr11le4Kzb6eeb-_mQxEYvUNNAy-2dI06OVjvW_EJznWg7DoOcN0AUFwaegq7E1rZzspIB5N5RRMwIWD0FQrgPSMWmr5PFY2Jk5_luLFh50k_Giqm9taIKcU9Ef0H8XojZTO-tjWtDSIWEyzCOJ0b6ZAvWz91ONeFYOirC_W4Q81couBgxHRuWAKt64-NJ8mGltDap8eynzJxcAmxTuZi_tniQ-b1U8TZcj8D9N_-kZJ_Ea5Uj9zH257CqvqshQeU1BRz8Vr8ugjyxaMNRbC15yU8qXNr1ZN-rK6WVEcZ7F3smAGeDqhakyH0t50zJVyKqleeMy6gCRKpOMywZDQ8SJ7hnkTnYbq1knI6A-SawWnt_jbRT76avKr0gD0YCvrgKzRFyqlxxc_UQAjH6YLiAKEZQN_-Weovp5QQjdRp6ufdQgtAIQwah_aRQiz2j9jyO-2RiENFyYJ2HzsXAxmEe072vEzSa3fch211xokn0L3TNlKNTyj-w%3D&store_id=3c7fdf9f-9547-4fb8-bac0-8ec670c67622
+
+
+### Get Product Details 
+GET {{host}}/api/v1/inventory/product
+    ?product_id=gAAAAAAAAAAAvcAsFofXR7XlzNv5B6-g-g4LYpn_gyjc_cgeC6wQe1oZyBfofHwAixWg_PRhuN9-xlG2116-3eIy5GBBDorFsH5n16GHeaHK_fukGkBwWWrcX7h-91BVtrzshylZJvFOU_4oTpgxON4egF-yzD-BbtfBkDfpbzDT68fqR0os9NcfXsdPf5lEJnIgHhLuX16L2AdYDZHtR5gC2gjZ44shJtobKB29RbBgQcpQJF8N7Mj4oaCBaSCjf63nuMuMRwUeuJgqTJBLJgwm8UPySvZJl4mjjpTr8LijQiKv2DXCc3knorXMJeqtDUERwERT1K9BdQeuw2xr_S-FaXmwckYwDQ_RI03glUQe9v_zwCSdy5keF8M4JFP6SHFwy3i2gszhZo5aqoAPf3CucAiZ126dRxscNew1wqqNTXLkDhCIpqgH98CiIYAP-vkHBaH1Fwg3nHIFC0pzWvuml8rvv7WnVn9_lcw7bMeOrLBHw9yaZu_QsOIJi8k96UduDtLEnws1cJU1JtZN_F8v1QuG8hW5l2BVwkiEtPYziiEQfwkmFAMiHjmaPJdR6-A7uTLDU6bycD2KQRxb1O0-wgTSajpAwxZdeAML5qWv-uf_pgPAq8F4eyHTvWpF44BpZT2tuY_73grjanKgvYuExK8J2PcZ9P8a3DUKOQPWkWq9GAkg4R854GhuPBVDuk507YLUEFaA2dOYtEcRQuR0MCYixmcBVA%3D%3D
+    &pickup=false
+    &include_quote=false
+    &user_latitude=37.7786357
+    &user_longitude=-122.3918135
+    &user_street_num=188
+    &user_street_name=King%20Street
+    &user_city=San%20Francisco
+    &user_state=CA&user_zipcode=94107
+    &user_country=US
+    &include_default_customization_description=false
+    &image_height=300
+    &image_width=300
+
+
+### List Orders
+GET {{host}}/api/v1/order/list
+    ?order_id=-NQTe0K0imQ0L7MdQC4q
+
+### Create Order
+POST {{host}}/api/v1/order/create
+Content-Type: application/json
+
+{
+  "place_order": false,
+  "items": [
+    {
+      "product_id": "gAAAAABjG7vcneDPtykGbsBcLjJUqW8qqJFctTqQDovWuSkEd9VlTM0dNVVKPLcDAMHXhna_dsa-RJOrXBO82jvvMCDXHYCz3Qwv9qEznaqGB2OXKA-k9cWAQFv1S7epy-C5yCDj7MLlDLl1psRTBRtUcv2PUnaYMMnMvonWGbzQbkGr0_0yjtFNS38EosYy-0-l3_0wLfSzQjSPVQ2Go9FUL4Dw_lvLYMkPHnGnewXnh0HtztKYrMn4lZQppC505ReRYfWxMQkMnqq10EbYMYRGDlEkYCNQX8TFtrNeq3ikYpmctjinfqdhs1-AjapHL6wpkyoRoY6rnKE7dBQjIkn_nIQ1aXmznzKpR5P0Xr9xvp5w2IkCWK8_MhHEenGct1y7n3yGteXzQM4o5Md1yynTwRal7Bq4QoVt-EzyLoW-ZtX8-snYWnDpNLduZLW7j3XCo8EIEBlKUSWkvNl0gbQgyosKgZB573GNQ-rEu3RYvJ_S_Ri62ywBYf_zTexUJtERtIpd6lawr6sty3Wpyq1zhve2zuhsRJ8wj_uorThApJreOXRiOpzyFXTZWxjXz3EklKoqPjUCVllMjVkVQUYkUghVvfr9dO7GWhkqGsRkRHjGxX7coYlI3GaVEQdaIcVrAo2zJBOJt42j5xwgOz0Gw2oupiwQwYtWpUVnYX0JHssDlbmbDON8ddU7YJdGxhC3TOFAGXLIzCPbRifamoEu2np7wbNQ8pDB5tX07lwVQIbrVs0thXYpdGxKk1eKx_c1aKQcf-srjZKHVUvO_4zSRC2FqIpdaYPU0pDDlIovXu6NgoB7CL0=",
+      "selected_options": [
+        {
+          "option_id": "gAAAAAAAAAAAvcAsFofXR7XlzNv5B6-g-rAwJFDta7zt94Yg9eLLrwjlri1BholqW5kmJdCjTdOx-onRBaLrkLH0gJyALVdHPQ3RrgwdzKixuyBDcl2pcC3Yw7WydclLYPdeZoFu7k9hzaSuKxC0RiYH9cUghhNRB6OaBmEWSRIBY_IsFT8uJ0DtFc1v9wF-K0OmBQ6QLrV1dT3fYTTtgnWNrrjZBLL2P1N3d77_CJAlvWNyvnksU2srG3rxM1GuZeN_tmvUQ0cz4NLdq8j8ZTfI8p0ILJ1dyE24krn5_rfalZvV33AylZ5TIHbh5LG6u-QY_NERjzUHK1uLUyjKYgGsq22wM4-uSGi1XTLqN7NngiGl8TQFsrh7r60XiBvB_dl0TN6sUawnDhbc3OLo6QvFWMG0-5ZhWaklnVXP59__N1WE9Jgze9jBfd30KgCNM76hxVCu5Y0seNvrLbDxAvaeW1Cqf37JNb1yxqvfVSI7Y92FnelFAa5OdPTOXdvXtSpGlH8biIvihF-ZTMUpfoGOLD2vF5tQwlImLG0V64l1TpIobps8GxoYChCknaUjGJqJ6H6lN3sHeCntpUd09hDpnlEv2yxRv1ocXmTQwuHXuI7NiZ1pmUpbrktD8iBNgmkIiOFPVqE8",
+          "quantity": 1
+        }
+      ],
+      "notes": "No whipped cream."
+    },
+    {
+      "product_id": "gAAAAABjG7vcilemNMYoldpPlDj4EoX3i0Z2SD02sdIfwANAnRm7inPVS7qqUbRMKZSqsYk_PEbZA6fZ1ek9e50iyhN6YqwoZGL16oC942H9gZ5Kxx6D0nUQXZbiWmrvzq1bjYlu01PTWhJV_RDOF-3iSit3wKQoxDOrguqoEk7jHqRMXEd7pR7IUk01-KaIGVX2YZfELRKLwIJHmdVu1elgRu-7msIiWITDU5VmjeZLo4Zx_D6p4in9T5aecFYowlXj9hhq42J1SpFJynrl06Tw7r8uA04ClKkSBGrSRVyjeGVIHq_0OZQ1cDV5hLfdcn8CUn_duwmjZYcfI5phC_ILtEnS2-l1e9_bcyonB_WRzyQVz_nyFk5ZkUDp9QHZZeCUQb2D_8AW7F9Ly76g0-RJctvXa1SKe9dNGjDFDngvOjr20XgI6Blgr3kwl67K-R7hohZcHLJN0jw-jnUg9iaZA4rJP5NU9cZP5kAEkVMCLK8jKQ7ePxwraG20p6HFYfjZ2MYGPwACtBcpYcxSLuycbSnedWCzL0koFj7uEKfcP8fdJQq0lNa8QjmFYTnoHpQaZTYdxVpJkJBTTg8Xk5tXUYdcnfImU6kO9CXjAIFxU6KXsftphxrNc9dalLxGEBJxYOOQGhROvsrk6S2ECfFwfSIW9nCaBbnw97OOJm91orncP2F1cAprQngbFzrEnKywYeB2E_dRgPXN4KsIEvhXtivA0_DnsSZq30GlO_U6j2Fkuv4KQUHr--XPxzjjeWwYRco1oet-0zbJQwOfHKfiWD9rNxVIQpHiSCmrV4IloldnKoPPY1s=",
+      "notes": ""
+    }
+  ],
+  "pickup": false,
+  "driver_tip_cents": 100,
+  "user_latitude": 37.7786357,
+  "user_longitude": -122.3918135,
+  "user_street_num": "188",
+  "user_street_name": "King Street",
+  "user_city": "San Francisco",
+  "user_state": "CA",
+  "user_country": "US",
+  "user_zipcode": "94107",
+  "user_dropoff_notes": "Leave in lobby",
+  "user_name": "Steve Jobs",
+  "user_email": "steve@apple.com",
+  "user_phone": 14044442058,
+  "user_id": "7B36A9CF",
+  "charge_user": true,
+  "include_final_quote": true,
+  "disable_sms": false,
+  "email_receipt_specifications": {
+    "prices_marked": false,
+    "added_fee": {
+      "added_fee_flat": 0,
+      "added_fee_percent": 0
+    },
+    "unify_service_fee": false,
+    "disable_email": false
+  },
+  "favorited": false,
+  "enable_substitution": false,
+  "autofill_selected_options": false
+}
+
+### Finalize Order
+POST {{host}}/api/v1/order/finalize
+Content-Type: application/json
+
+{
+  "order_id": "-NQTe0K0imQ0L7MdQC4q"
+}
+
+
+### Create Cart 
+POST {{host}}/api/v1/cart/create
+Content-Type: application/json
+
+{
+  "items": [
+    {
+      "product_id": "gAAAAABjG7vcneDPtykGbsBcLjJUqW8qqJFctTqQDovWuSkEd9VlTM0dNVVKPLcDAMHXhna_dsa-RJOrXBO82jvvMCDXHYCz3Qwv9qEznaqGB2OXKA-k9cWAQFv1S7epy-C5yCDj7MLlDLl1psRTBRtUcv2PUnaYMMnMvonWGbzQbkGr0_0yjtFNS38EosYy-0-l3_0wLfSzQjSPVQ2Go9FUL4Dw_lvLYMkPHnGnewXnh0HtztKYrMn4lZQppC505ReRYfWxMQkMnqq10EbYMYRGDlEkYCNQX8TFtrNeq3ikYpmctjinfqdhs1-AjapHL6wpkyoRoY6rnKE7dBQjIkn_nIQ1aXmznzKpR5P0Xr9xvp5w2IkCWK8_MhHEenGct1y7n3yGteXzQM4o5Md1yynTwRal7Bq4QoVt-EzyLoW-ZtX8-snYWnDpNLduZLW7j3XCo8EIEBlKUSWkvNl0gbQgyosKgZB573GNQ-rEu3RYvJ_S_Ri62ywBYf_zTexUJtERtIpd6lawr6sty3Wpyq1zhve2zuhsRJ8wj_uorThApJreOXRiOpzyFXTZWxjXz3EklKoqPjUCVllMjVkVQUYkUghVvfr9dO7GWhkqGsRkRHjGxX7coYlI3GaVEQdaIcVrAo2zJBOJt42j5xwgOz0Gw2oupiwQwYtWpUVnYX0JHssDlbmbDON8ddU7YJdGxhC3TOFAGXLIzCPbRifamoEu2np7wbNQ8pDB5tX07lwVQIbrVs0thXYpdGxKk1eKx_c1aKQcf-srjZKHVUvO_4zSRC2FqIpdaYPU0pDDlIovXu6NgoB7CL0=",
+      "selected_options": [
+        {
+          "option_id": "gAAAAAAAAAAAvcAsFofXR7XlzNv5B6-g-rAwJFDta7zt94Yg9eLLrwjlri1BholqW5kmJdCjTdOx-onRBaLrkLH0gJyALVdHPQ3RrgwdzKixuyBDcl2pcC3Yw7WydclLYPdeZoFu7k9hzaSuKxC0RiYH9cUghhNRB6OaBmEWSRIBY_IsFT8uJ0DtFc1v9wF-K0OmBQ6QLrV1dT3fYTTtgnWNrrjZBLL2P1N3d77_CJAlvWNyvnksU2srG3rxM1GuZeN_tmvUQ0cz4NLdq8j8ZTfI8p0ILJ1dyE24krn5_rfalZvV33AylZ5TIHbh5LG6u-QY_NERjzUHK1uLUyjKYgGsq22wM4-uSGi1XTLqN7NngiGl8TQFsrh7r60XiBvB_dl0TN6sUawnDhbc3OLo6QvFWMG0-5ZhWaklnVXP59__N1WE9Jgze9jBfd30KgCNM76hxVCu5Y0seNvrLbDxAvaeW1Cqf37JNb1yxqvfVSI7Y92FnelFAa5OdPTOXdvXtSpGlH8biIvihF-ZTMUpfoGOLD2vF5tQwlImLG0V64l1TpIobps8GxoYChCknaUjGJqJ6H6lN3sHeCntpUd09hDpnlEv2yxRv1ocXmTQwuHXuI7NiZ1pmUpbrktD8iBNgmkIiOFPVqE8",
+          "quantity": 1
+        }
+      ],
+      "notes": "No whipped cream."
+    },
+    {
+      "product_id": "gAAAAABjG7vcilemNMYoldpPlDj4EoX3i0Z2SD02sdIfwANAnRm7inPVS7qqUbRMKZSqsYk_PEbZA6fZ1ek9e50iyhN6YqwoZGL16oC942H9gZ5Kxx6D0nUQXZbiWmrvzq1bjYlu01PTWhJV_RDOF-3iSit3wKQoxDOrguqoEk7jHqRMXEd7pR7IUk01-KaIGVX2YZfELRKLwIJHmdVu1elgRu-7msIiWITDU5VmjeZLo4Zx_D6p4in9T5aecFYowlXj9hhq42J1SpFJynrl06Tw7r8uA04ClKkSBGrSRVyjeGVIHq_0OZQ1cDV5hLfdcn8CUn_duwmjZYcfI5phC_ILtEnS2-l1e9_bcyonB_WRzyQVz_nyFk5ZkUDp9QHZZeCUQb2D_8AW7F9Ly76g0-RJctvXa1SKe9dNGjDFDngvOjr20XgI6Blgr3kwl67K-R7hohZcHLJN0jw-jnUg9iaZA4rJP5NU9cZP5kAEkVMCLK8jKQ7ePxwraG20p6HFYfjZ2MYGPwACtBcpYcxSLuycbSnedWCzL0koFj7uEKfcP8fdJQq0lNa8QjmFYTnoHpQaZTYdxVpJkJBTTg8Xk5tXUYdcnfImU6kO9CXjAIFxU6KXsftphxrNc9dalLxGEBJxYOOQGhROvsrk6S2ECfFwfSIW9nCaBbnw97OOJm91orncP2F1cAprQngbFzrEnKywYeB2E_dRgPXN4KsIEvhXtivA0_DnsSZq30GlO_U6j2Fkuv4KQUHr--XPxzjjeWwYRco1oet-0zbJQwOfHKfiWD9rNxVIQpHiSCmrV4IloldnKoPPY1s=",
+      "notes": ""
+    }
+  ],
+  "pickup": false,
+  "driver_tip_cents": 100,
+  "user_latitude": 37.7786357,
+  "user_longitude": -122.3918135,
+  "user_street_num": "188",
+  "user_street_name": "King Street",
+  "user_apt_num": "108",
+  "user_city": "San Francisco",
+  "user_state": "CA",
+  "user_country": "US",
+  "user_zipcode": "94107",
+  "user_dropoff_notes": "Leave in lobby",
+  "user_name": "Steve Jobs",
+  "user_email": "steve@apple.com",
+  "user_phone": 14044442058,
+  "user_id": "7B36A9CF",
+  "disable_sms": false,
+  "email_receipt_specifications": {
+    "prices_marked": false,
+    "added_fee": {
+      "added_fee_flat": 100,
+      "added_fee_percent": 50,
+      "is_added_fee_taxable": false
+    },
+    "unify_service_fee": false,
+    "misc_fees": [
+      {
+        "fee_name": "Chef tip",
+        "fee_amount": 200
+      }
+    ],
+    "disable_email": false
+  },
+  "customer_order_id": "ABC123",
+  "autofill_selected_options": false
+}
+
+
+### Add Item To Cart
+POST {{host}}/api/v1/cart/add
+Content-Type: application/json
+
+{
+  "cart_id": "-NQT8WXEeZIySsW65DFX",
+  "items": [
+    {
+      "product_id": "gAAAAABjG7vcneDPtykGbsBcLjJUqW8qqJFctTqQDovWuSkEd9VlTM0dNVVKPLcDAMHXhna_dsa-RJOrXBO82jvvMCDXHYCz3Qwv9qEznaqGB2OXKA-k9cWAQFv1S7epy-C5yCDj7MLlDLl1psRTBRtUcv2PUnaYMMnMvonWGbzQbkGr0_0yjtFNS38EosYy-0-l3_0wLfSzQjSPVQ2Go9FUL4Dw_lvLYMkPHnGnewXnh0HtztKYrMn4lZQppC505ReRYfWxMQkMnqq10EbYMYRGDlEkYCNQX8TFtrNeq3ikYpmctjinfqdhs1-AjapHL6wpkyoRoY6rnKE7dBQjIkn_nIQ1aXmznzKpR5P0Xr9xvp5w2IkCWK8_MhHEenGct1y7n3yGteXzQM4o5Md1yynTwRal7Bq4QoVt-EzyLoW-ZtX8-snYWnDpNLduZLW7j3XCo8EIEBlKUSWkvNl0gbQgyosKgZB573GNQ-rEu3RYvJ_S_Ri62ywBYf_zTexUJtERtIpd6lawr6sty3Wpyq1zhve2zuhsRJ8wj_uorThApJreOXRiOpzyFXTZWxjXz3EklKoqPjUCVllMjVkVQUYkUghVvfr9dO7GWhkqGsRkRHjGxX7coYlI3GaVEQdaIcVrAo2zJBOJt42j5xwgOz0Gw2oupiwQwYtWpUVnYX0JHssDlbmbDON8ddU7YJdGxhC3TOFAGXLIzCPbRifamoEu2np7wbNQ8pDB5tX07lwVQIbrVs0thXYpdGxKk1eKx_c1aKQcf-srjZKHVUvO_4zSRC2FqIpdaYPU0pDDlIovXu6NgoB7CL0=",
+      "selected_options": [
+        {
+          "option_id": "gAAAAAAAAAAAvcAsFofXR7XlzNv5B6-g-rAwJFDta7zt94Yg9eLLrwjlri1BholqW5kmJdCjTdOx-onRBaLrkLH0gJyALVdHPQ3RrgwdzKixuyBDcl2pcC3Yw7WydclLYPdeZoFu7k9hzaSuKxC0RiYH9cUghhNRB6OaBmEWSRIBY_IsFT8uJ0DtFc1v9wF-K0OmBQ6QLrV1dT3fYTTtgnWNrrjZBLL2P1N3d77_CJAlvWNyvnksU2srG3rxM1GuZeN_tmvUQ0cz4NLdq8j8ZTfI8p0ILJ1dyE24krn5_rfalZvV33AylZ5TIHbh5LG6u-QY_NERjzUHK1uLUyjKYgGsq22wM4-uSGi1XTLqN7NngiGl8TQFsrh7r60XiBvB_dl0TN6sUawnDhbc3OLo6QvFWMG0-5ZhWaklnVXP59__N1WE9Jgze9jBfd30KgCNM76hxVCu5Y0seNvrLbDxAvaeW1Cqf37JNb1yxqvfVSI7Y92FnelFAa5OdPTOXdvXtSpGlH8biIvihF-ZTMUpfoGOLD2vF5tQwlImLG0V64l1TpIobps8GxoYChCknaUjGJqJ6H6lN3sHeCntpUd09hDpnlEv2yxRv1ocXmTQwuHXuI7NiZ1pmUpbrktD8iBNgmkIiOFPVqE8",
+          "quantity": 1
+        }
+      ],
+      "notes": "No whipped cream."
+    },
+    {
+      "product_id": "gAAAAABjG7vcilemNMYoldpPlDj4EoX3i0Z2SD02sdIfwANAnRm7inPVS7qqUbRMKZSqsYk_PEbZA6fZ1ek9e50iyhN6YqwoZGL16oC942H9gZ5Kxx6D0nUQXZbiWmrvzq1bjYlu01PTWhJV_RDOF-3iSit3wKQoxDOrguqoEk7jHqRMXEd7pR7IUk01-KaIGVX2YZfELRKLwIJHmdVu1elgRu-7msIiWITDU5VmjeZLo4Zx_D6p4in9T5aecFYowlXj9hhq42J1SpFJynrl06Tw7r8uA04ClKkSBGrSRVyjeGVIHq_0OZQ1cDV5hLfdcn8CUn_duwmjZYcfI5phC_ILtEnS2-l1e9_bcyonB_WRzyQVz_nyFk5ZkUDp9QHZZeCUQb2D_8AW7F9Ly76g0-RJctvXa1SKe9dNGjDFDngvOjr20XgI6Blgr3kwl67K-R7hohZcHLJN0jw-jnUg9iaZA4rJP5NU9cZP5kAEkVMCLK8jKQ7ePxwraG20p6HFYfjZ2MYGPwACtBcpYcxSLuycbSnedWCzL0koFj7uEKfcP8fdJQq0lNa8QjmFYTnoHpQaZTYdxVpJkJBTTg8Xk5tXUYdcnfImU6kO9CXjAIFxU6KXsftphxrNc9dalLxGEBJxYOOQGhROvsrk6S2ECfFwfSIW9nCaBbnw97OOJm91orncP2F1cAprQngbFzrEnKywYeB2E_dRgPXN4KsIEvhXtivA0_DnsSZq30GlO_U6j2Fkuv4KQUHr--XPxzjjeWwYRco1oet-0zbJQwOfHKfiWD9rNxVIQpHiSCmrV4IloldnKoPPY1s=",
+      "notes": ""
+    }
+  ]
+}
+
+
+### Remove Item from Cart
+POST {{host}}/api/v1/cart/remove
+Content-Type: application/json
+
+{
+  "cart_id": "-NQT8WXEeZIySsW65DFX",
+  "items": [
+    {
+      "product_id": "gAAAAABjG7vcneDPtykGbsBcLjJUqW8qqJFctTqQDovWuSkEd9VlTM0dNVVKPLcDAMHXhna_dsa-RJOrXBO82jvvMCDXHYCz3Qwv9qEznaqGB2OXKA-k9cWAQFv1S7epy-C5yCDj7MLlDLl1psRTBRtUcv2PUnaYMMnMvonWGbzQbkGr0_0yjtFNS38EosYy-0-l3_0wLfSzQjSPVQ2Go9FUL4Dw_lvLYMkPHnGnewXnh0HtztKYrMn4lZQppC505ReRYfWxMQkMnqq10EbYMYRGDlEkYCNQX8TFtrNeq3ikYpmctjinfqdhs1-AjapHL6wpkyoRoY6rnKE7dBQjIkn_nIQ1aXmznzKpR5P0Xr9xvp5w2IkCWK8_MhHEenGct1y7n3yGteXzQM4o5Md1yynTwRal7Bq4QoVt-EzyLoW-ZtX8-snYWnDpNLduZLW7j3XCo8EIEBlKUSWkvNl0gbQgyosKgZB573GNQ-rEu3RYvJ_S_Ri62ywBYf_zTexUJtERtIpd6lawr6sty3Wpyq1zhve2zuhsRJ8wj_uorThApJreOXRiOpzyFXTZWxjXz3EklKoqPjUCVllMjVkVQUYkUghVvfr9dO7GWhkqGsRkRHjGxX7coYlI3GaVEQdaIcVrAo2zJBOJt42j5xwgOz0Gw2oupiwQwYtWpUVnYX0JHssDlbmbDON8ddU7YJdGxhC3TOFAGXLIzCPbRifamoEu2np7wbNQ8pDB5tX07lwVQIbrVs0thXYpdGxKk1eKx_c1aKQcf-srjZKHVUvO_4zSRC2FqIpdaYPU0pDDlIovXu6NgoB7CL0=",
+      "selected_options": [
+        {
+          "option_id": "gAAAAAAAAAAAvcAsFofXR7XlzNv5B6-g-rAwJFDta7zt94Yg9eLLrwjlri1BholqW5kmJdCjTdOx-onRBaLrkLH0gJyALVdHPQ3RrgwdzKixuyBDcl2pcC3Yw7WydclLYPdeZoFu7k9hzaSuKxC0RiYH9cUghhNRB6OaBmEWSRIBY_IsFT8uJ0DtFc1v9wF-K0OmBQ6QLrV1dT3fYTTtgnWNrrjZBLL2P1N3d77_CJAlvWNyvnksU2srG3rxM1GuZeN_tmvUQ0cz4NLdq8j8ZTfI8p0ILJ1dyE24krn5_rfalZvV33AylZ5TIHbh5LG6u-QY_NERjzUHK1uLUyjKYgGsq22wM4-uSGi1XTLqN7NngiGl8TQFsrh7r60XiBvB_dl0TN6sUawnDhbc3OLo6QvFWMG0-5ZhWaklnVXP59__N1WE9Jgze9jBfd30KgCNM76hxVCu5Y0seNvrLbDxAvaeW1Cqf37JNb1yxqvfVSI7Y92FnelFAa5OdPTOXdvXtSpGlH8biIvihF-ZTMUpfoGOLD2vF5tQwlImLG0V64l1TpIobps8GxoYChCknaUjGJqJ6H6lN3sHeCntpUd09hDpnlEv2yxRv1ocXmTQwuHXuI7NiZ1pmUpbrktD8iBNgmkIiOFPVqE8",
+          "quantity": 1
+        }
+      ],
+      "notes": "No whipped cream."
+    },
+    {
+      "product_id": "gAAAAABjG7vcilemNMYoldpPlDj4EoX3i0Z2SD02sdIfwANAnRm7inPVS7qqUbRMKZSqsYk_PEbZA6fZ1ek9e50iyhN6YqwoZGL16oC942H9gZ5Kxx6D0nUQXZbiWmrvzq1bjYlu01PTWhJV_RDOF-3iSit3wKQoxDOrguqoEk7jHqRMXEd7pR7IUk01-KaIGVX2YZfELRKLwIJHmdVu1elgRu-7msIiWITDU5VmjeZLo4Zx_D6p4in9T5aecFYowlXj9hhq42J1SpFJynrl06Tw7r8uA04ClKkSBGrSRVyjeGVIHq_0OZQ1cDV5hLfdcn8CUn_duwmjZYcfI5phC_ILtEnS2-l1e9_bcyonB_WRzyQVz_nyFk5ZkUDp9QHZZeCUQb2D_8AW7F9Ly76g0-RJctvXa1SKe9dNGjDFDngvOjr20XgI6Blgr3kwl67K-R7hohZcHLJN0jw-jnUg9iaZA4rJP5NU9cZP5kAEkVMCLK8jKQ7ePxwraG20p6HFYfjZ2MYGPwACtBcpYcxSLuycbSnedWCzL0koFj7uEKfcP8fdJQq0lNa8QjmFYTnoHpQaZTYdxVpJkJBTTg8Xk5tXUYdcnfImU6kO9CXjAIFxU6KXsftphxrNc9dalLxGEBJxYOOQGhROvsrk6S2ECfFwfSIW9nCaBbnw97OOJm91orncP2F1cAprQngbFzrEnKywYeB2E_dRgPXN4KsIEvhXtivA0_DnsSZq30GlO_U6j2Fkuv4KQUHr--XPxzjjeWwYRco1oet-0zbJQwOfHKfiWD9rNxVIQpHiSCmrV4IloldnKoPPY1s=",
+      "notes": ""
+    }
+  ]
+} 
+
+
+### Retrieve Cart
+GET {{host}}/api/v1/cart/retrieve
+    ?cart_id=-NQT8WXEeZIySsW65DFX
+
+
+### List Carts
+GET {{host}}/api/v1/cart/list
+    ?user_id=7B36A9CF
+

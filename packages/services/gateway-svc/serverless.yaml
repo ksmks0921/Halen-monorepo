@@ -1,0 +1,69 @@
+service: gateway-svc
+
+frameworkVersion: '3'
+
+plugins:
+  - serverless-offline
+  - serverless-jetpack
+  - serverless-add-api-key
+  - serverless-plugin-optimize
+  - serverless-plugin-typescript
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  stage: ${opt:stage, 'dev'}
+  profile: ${opt:aws-profile, 'dev'}
+  region: ${opt:region, 'us-east-1'}
+  environment:
+    WAITLIST_TABLE: ${param:waitlistTable}
+    ENVIRONMENT: ${opt:stage, 'dev'}
+    REGION: ${opt:region, 'us-east-1'}
+
+  iam:
+    role:
+      statements:
+        - Effect: 'Allow'
+          Action:
+            - 'dynamodb:DescribeTable'
+            - 'dynamodb:Query'
+            - 'dynamodb:Scan'
+            - 'dynamodb:GetItem'
+            - 'dynamodb:PutItem'
+            - 'dynamodb:UpdateItem'
+            - 'dynamodb:DeleteItem'
+          Resource: arn:aws:dynamodb:${opt:region, 'us-east-1'}:*:table/${param:waitlistTable}
+
+package:
+  individually: true
+  include:
+    - node_modules/
+
+functions:
+  api:
+    handler: src/main.handler
+    timeout: 20
+    events:
+      - http:
+          method: any
+          path: /{proxy+}
+
+custom:
+  apiKeys:
+    - name: gateway-svc-api-key
+  serverless-offline:
+    httpPort: 3000 
+    lambdaPort: 3010
+    websocketPort: 3020       
+  optimize:
+    external: ['swagger-ui-dist']       
+
+params:
+  plg:
+    waitlistTable: Waitlist-77jmwqdzgffq7lp6kjhzzltbzq-plg
+  dev:
+    waitlistTable: Waitlist-77jmwqdzgffq7lp6kjhzzltbzq-dev
+  stg:
+    waitlistTable: Waitlist-77jmwqdzgffq7lp6kjhzzltbzq-stg
+  prod:
+    waitlistTable: Waitlist-77jmwqdzgffq7lp6kjhzzltbzq-prod

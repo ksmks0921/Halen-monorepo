@@ -1,0 +1,6 @@
+type User {
+    name: String
+}
+
+## https://github.com/wise-introvert/nestjs-graphql-api
+## https://github.com/nestjs/nest/tree/master/sample/12-graphql-schema-first
